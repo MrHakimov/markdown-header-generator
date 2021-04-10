@@ -5,6 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
+    // TODO
+    // 1. title limit constant
+    // 2. indentation constant
+    // 3. stack for levels
+    // 4. streams for file printing
+    // 5. accept file as an arg
+    // 6. use format in headerToLink
+    // 7. tests
     private static final int[] cnt = new int[7];
     private static final Map<String, Integer> repeats = new HashMap<>();
     private static int lastLevel = 0;
@@ -78,13 +86,14 @@ public class Main {
         } else {
             repeats.put(link, reps + 1);
             link = link + "-" + reps;
+            repeats.put(link, 1);
         }
 
         return indentation(level) + cnt[level] + ". " + "[" + line + "]" + "(#" + link + ")";
     }
 
     public static void main(String[] args) {
-        try (FileReader file = new FileReader("src/main/inputs/test2.md")) {
+        try (FileReader file = new FileReader("src/main/inputs/test4.md")) {
             BufferedReader reader = new BufferedReader(file);
 
             String line;
