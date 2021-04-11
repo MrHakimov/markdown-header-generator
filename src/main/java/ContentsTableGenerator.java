@@ -49,14 +49,7 @@ class ContentsTableGenerator {
     }
 
     private static int countPrefix(String line, char c) {
-        int i = 0;
-        int cnt = 0;
-
-        while (i < line.length() && line.charAt(i++) == c) {
-            cnt++;
-        }
-
-        return cnt;
+        return (int) line.chars().takeWhile(s -> s == c).count();
     }
 
     private static boolean consistsOf(String line, char c) {
@@ -64,35 +57,18 @@ class ContentsTableGenerator {
         return countPrefix(line, c) == line.length();
     }
 
-    private static String removeRepeatingSpaces(String line) {
-        StringBuilder builder = new StringBuilder();
-        char last = NON_SPACE;
-
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
-
-            if (last != SPACE || c != SPACE) {
-                builder.append(c);
-            }
-
-            last = line.charAt(i);
+    private static void addToBuilder(StringBuilder builder, char c) {
+        if (isWordCharacter(c)) {
+            builder.append(Character.toLowerCase(c));
+        } else if (c == SPACE) {
+            builder.append(DASH);
         }
-
-        return builder.toString();
     }
 
     private static String toKebabCase(String line) {
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
-
-            if (isWordCharacter(c)) {
-                builder.append(Character.toLowerCase(c));
-            } else if (c == SPACE) {
-                builder.append(DASH);
-            }
-        }
+        line.chars().forEach(c -> addToBuilder(builder, (char) c));
 
         return builder.toString();
     }
@@ -128,8 +104,8 @@ class ContentsTableGenerator {
     // ------------------------------------------------------------------
 
     private String updateRepeats(String link) {
-        int reps = repeats.getOrDefault(link, -1);
-        if (reps != -1) {
+        Integer reps = repeats.get(link);
+        if (reps != null) {
             repeats.put(link, reps + 1);
             link = link + DASH + reps;
         }
@@ -154,7 +130,7 @@ class ContentsTableGenerator {
         String link = toKebabCase(line);
         link = updateRepeats(link);
 
-        line = removeRepeatingSpaces(line);
+        line = line.replaceAll(" +", " ");;
         lastLevel = level;
 
         return String.format("%s%d. [%s](#%s)", indentation(level), order[level], line, link);
@@ -175,7 +151,7 @@ class ContentsTableGenerator {
         }
 
         line = line.substring(spaces).strip();
-        level = countPrefix(line,  SHARP);
+        level = countPrefix(line, SHARP);
 
         if (isHeaderLevelValid(level)) {
             safeWrite(writer, headerToLink(line.substring(level), level));
@@ -186,13 +162,11 @@ class ContentsTableGenerator {
                 // if potential header consists of '-' only, we need exactly "--"
                 // to interpret it as a header, otherwise "-" - should be interpreted as a list element,
                 // "---", "----", "-----", ... - as an <HR> HTML-tag
-                if (consistsOf(potentialHeader, DASH)) {
-                    if (countPrefix(potentialHeader, DASH) == 2) {
-                        safeWrite(writer, headerToLink(potentialHeader, level));
-                    }
-                } else {
-                    safeWrite(writer, headerToLink(potentialHeader, level));
+                if (consistsOf(potentialHeader, DASH) && countPrefix(potentialHeader, DASH) != 2) {
+                    return;
                 }
+
+                safeWrite(writer, headerToLink(potentialHeader, level));
             } else {
                 potentialHeader = line;
             }

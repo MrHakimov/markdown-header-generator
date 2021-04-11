@@ -42,7 +42,7 @@ public class Main {
             try {
                 Files.createDirectories(path.getParent());
                 Files.createFile(path);
-            } catch (FileAlreadyExistsException e) {
+            } catch (FileAlreadyExistsException ignored) {
                 // everything is fine than
             } catch (IOException e) {
                 System.err.printf("Unable to create result file: %s%n", e.getMessage());
