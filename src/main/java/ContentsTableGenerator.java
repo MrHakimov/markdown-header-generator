@@ -19,7 +19,6 @@ class ContentsTableGenerator {
     private static final char SHARP = '#';
     private static final char SPACE = ' ';
     private static final char EQUALITY = '=';
-    private static final char NON_SPACE = '!'; // any non-space character
     private static final char UNDERSCORE = '_';
 
     // Last header level
@@ -130,7 +129,7 @@ class ContentsTableGenerator {
         String link = toKebabCase(line);
         link = updateRepeats(link);
 
-        line = line.replaceAll(" +", " ");;
+        line = line.replaceAll(" +", " ");
         lastLevel = level;
 
         return String.format("%s%d. [%s](#%s)", indentation(level), order[level], line, link);
