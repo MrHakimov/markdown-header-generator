@@ -44,15 +44,7 @@ content
 Запуск консольного приложения:
 ```shell
 chmod +x run.sh
-./run
-```
-или
-```
-./gradlew build
-
-cd build/classes/java/main
-
-java Main input_file [--file [output_file]]
+./run input_file [--file [output_file]]
 ```
 
 Последние два аргумента являются опциональными.
@@ -74,6 +66,17 @@ java Main input_file --file
 java Main input_file --file output_file
 ```
 то результат запишется в указанный файл.
+
+Например, можно запустить приложение на файле `sample.md` из папки `tests`:
+```shell
+chmod +x run.sh
+
+./run tests/sample.md # выведет результат в stdout
+
+./run tests/sample.md --file # запишет результат в sample.md
+
+./run tests/sample.md --file tests/sample_result.md # запишет результат в sample_result.md
+```
 
 # Преимущества
 1. Рассмотрено и проверено на GitHub большое число различных кейсов (повторения в названиях заголовков, обработка специальных символов, учет количества пробелов в начале строки и многое другое)
