@@ -2,7 +2,7 @@
     1. [Idea](#idea)
     2. [Implementation](#implementation)
         1. [Step 1](#step-1)
-        2. [Step 2 d](#step-2------------d)
+        2. [Step 2 d](#step-2-d)
     3. [Step 1](#step-1-1)
     4. [Step 2](#step-2)
 2. [Step 1](#step-1-2)
