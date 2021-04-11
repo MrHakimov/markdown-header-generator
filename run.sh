@@ -2,4 +2,4 @@
 
 cd build/classes/java/main
 
-java Main
+java Main "$@"

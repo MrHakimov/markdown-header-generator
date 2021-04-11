@@ -17,7 +17,7 @@ public class Main {
         String outputFile = inputFile + ".out";
 
         boolean isPrintToFile = args.length > 1;
-        boolean isPrintToInputFile = true;
+        boolean isPrintToInputFile = isPrintToFile;
 
         if (Files.notExists(Paths.get(inputFile))) {
             System.err.printf("Invalid input file path. Unable to open file: %s%n", inputFile);
