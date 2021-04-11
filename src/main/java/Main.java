@@ -5,9 +5,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    public static void main(String[] args) {
-        String HELP_MESSAGE = "%n%n- Arguments usage: input_file [--file [output_file]]%n";
+    private final static String HELP_MESSAGE = "%n%n- Arguments usage: input_file [--file [output_file]]%n";
 
+    public static void main(String[] args) {
         if (args.length < 1 || args.length > 3) {
             System.err.printf("Invalid number of arguments.%n" + HELP_MESSAGE);
             return;
@@ -64,7 +64,6 @@ public class Main {
                 Files.delete(Paths.get(inputFile));
                 Files.move(Paths.get(outputFile), Paths.get(inputFile));
             } catch (IOException e) {
-                e.printStackTrace();
                 System.err.printf("Unable to move files: %s%n", e.getMessage());
             }
         }

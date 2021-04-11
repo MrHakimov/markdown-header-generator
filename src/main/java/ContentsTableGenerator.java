@@ -1,4 +1,9 @@
-import java.io.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -47,16 +52,16 @@ class ContentsTableGenerator {
         return INDENTATION.repeat((level - 1));
     }
 
-    private static int countPrefix(String line, char c) {
+    private static int countPrefix(@NotNull final String line, char c) {
         return (int) line.chars().takeWhile(s -> s == c).count();
     }
 
-    private static boolean consistsOf(String line, char c) {
+    private static boolean consistsOf(@NotNull String line, char c) {
         line = line.strip();
         return countPrefix(line, c) == line.length();
     }
 
-    private static void addToBuilder(StringBuilder builder, char c) {
+    private static void addToBuilder(@NotNull StringBuilder builder, char c) {
         if (isWordCharacter(c)) {
             builder.append(Character.toLowerCase(c));
         } else if (c == SPACE) {
@@ -64,7 +69,7 @@ class ContentsTableGenerator {
         }
     }
 
-    private static String toKebabCase(String line) {
+    private static String toKebabCase(@NotNull final String line) {
         StringBuilder builder = new StringBuilder();
 
         line.chars().forEach(c -> addToBuilder(builder, (char) c));
@@ -72,7 +77,7 @@ class ContentsTableGenerator {
         return builder.toString();
     }
 
-    private static int alternativeHeaderLevel(String line) {
+    private static int alternativeHeaderLevel(@NotNull final String line) {
         if (line.isEmpty()) {
             return 0;
         }
@@ -92,7 +97,7 @@ class ContentsTableGenerator {
 
     // ------------------------------------------------------------------
 
-    private static void safeWrite(BufferedWriter writer, String line) {
+    private static void safeWrite(@NotNull BufferedWriter writer, @NotNull final String line) {
         try {
             writer.write(line + String.format("%n"));
         } catch (IOException e) {
@@ -102,7 +107,7 @@ class ContentsTableGenerator {
 
     // ------------------------------------------------------------------
 
-    private String updateRepeats(String link) {
+    private String updateRepeats(@NotNull String link) {
         Integer reps = repeats.get(link);
         if (reps != null) {
             repeats.put(link, reps + 1);
@@ -122,7 +127,7 @@ class ContentsTableGenerator {
         order[level]++;
     }
 
-    private String headerToLink(String line, int level) {
+    private String headerToLink(@NotNull String line, int level) {
         line = line.strip();
         updateOrder(level);
 
@@ -137,7 +142,7 @@ class ContentsTableGenerator {
 
     // ------------------------------------------------------------------
 
-    private void extractHeader(BufferedWriter writer, String line) {
+    private void extractHeader(@NotNull BufferedWriter writer, @NotNull String line) {
         int level;
         line = line.replace("\t", INDENTATION).replace("\r", "");
 
@@ -174,7 +179,7 @@ class ContentsTableGenerator {
 
     // ------------------------------------------------------------------
 
-    public void generate(String inputFile, String outputFile, boolean isPrintToFile) {
+    public void generate(@NotNull final String inputFile, @NotNull final String outputFile, boolean isPrintToFile) {
         try (BufferedWriter writer = new BufferedWriter(
                 isPrintToFile
                         ? new FileWriter(outputFile)
