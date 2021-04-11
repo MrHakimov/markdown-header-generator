@@ -19,7 +19,7 @@ public class Main {
         boolean isPrintToFile = args.length > 1;
         boolean isPrintToInputFile = isPrintToFile;
 
-        if (Files.notExists(Paths.get(inputFile))) {
+        if (inputFile == null || Files.notExists(Paths.get(inputFile))) {
             System.err.printf("Invalid input file path. Unable to open file: %s%n", inputFile);
             return;
         }
@@ -27,13 +27,19 @@ public class Main {
         if (isPrintToFile) {
             String flag = args[1];
 
-            if (!flag.equals("--file")) {
+            if (flag == null || !flag.equals("--file")) {
                 System.err.printf("Incorrect flag. Expected: '--file', found: '%s'.%n%s", flag, HELP_MESSAGE);
                 return;
             }
 
             if (args.length == 3) {
                 outputFile = args[2];
+
+                if (outputFile == null) {
+                    System.err.printf("Unable to create result file: <null>%n");
+                    return;
+                }
+
                 isPrintToInputFile = false;
             }
 
