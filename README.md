@@ -51,19 +51,19 @@ chmod +x run.sh
 
 - Если запустить приложение в формате:
 ```shell
-java Main input_file
+./run input_file
 ```
 то результат будет выведен на стандартный вывод.
 
 - Если запустить приложение в формате:
 ```shell
-java Main input_file --file
+./run input_file --file
 ```
 то результат запишется в тот же файл.
 
 - Если запустить приложение в формате:
 ```shell
-java Main input_file --file output_file
+./run input_file --file output_file
 ```
 то результат запишется в указанный файл.
 
