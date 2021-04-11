@@ -6,10 +6,10 @@ import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) {
-        String HELP_MESSAGE = "\n\n- Arguments usage: input_file [--file [output_file]]";
+        String HELP_MESSAGE = "%n%n- Arguments usage: input_file [--file [output_file]]%n";
 
         if (args.length < 1 || args.length > 3) {
-            System.err.println("Invalid number of arguments." + HELP_MESSAGE);
+            System.err.printf("Invalid number of arguments.%n" + HELP_MESSAGE);
             return;
         }
 
@@ -28,8 +28,7 @@ public class Main {
             String flag = args[1];
 
             if (!flag.equals("--file")) {
-                System.err.printf("Incorrect flag. Expected: '--file', found: '%s'.%n", flag);
-                System.err.println(HELP_MESSAGE);
+                System.err.printf("Incorrect flag. Expected: '--file', found: '%s'.%n%s", flag, HELP_MESSAGE);
                 return;
             }
 
@@ -51,7 +50,7 @@ public class Main {
             }
         }
 
-        HeaderGenerator generator = new HeaderGenerator();
+        ContentsTableGenerator generator = new ContentsTableGenerator();
         generator.generate(inputFile, outputFile, isPrintToFile);
 
         if (isPrintToInputFile) {
